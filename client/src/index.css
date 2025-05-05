@@ -1,0 +1,59 @@
+/* Apply a global style */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Form container */
+.auth-container {
+  background: white;
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Inputs */
+.auth-container input {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Buttons */
+.auth-container button {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  background-color: #4f46e5;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.auth-container button:hover {
+  background-color: #5547d3;
+  box-shadow: 0px 0px 10px black;
+}
+
+/* Link paragraph */
+.auth-container p {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.auth-container a {
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: bold;
+}

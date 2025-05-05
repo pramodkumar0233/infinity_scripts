@@ -1,0 +1,120 @@
+.ocr-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    flex-direction: row; /* Ensure horizontal layout */
+    gap: 30px;
+    padding: 40px;
+  }
+  
+  .upload-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .upload-section input[type="file"] {
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    width: 200px; /* File input width */
+  }
+  
+  .upload-section input[type="file"]:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .upload-section button {
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .upload-section button:hover {
+    background-color: #0056b3;
+  }
+  
+  .textarea-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .icon-bar {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: flex;
+    gap: 10px;
+    font-size: 22px;
+    color: #007bff;
+    cursor: pointer;
+    z-index: 10;
+  }
+  
+  .icon-bar:hover {
+    color: #0056b3;
+  }
+  
+  .ocr-textarea {
+    width: 100%;
+    width: 500px;
+    height: 500px;
+    padding: 12px;
+    font-size: 16px;
+    resize: vertical;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    outline: none;
+    font-family: sans-serif;
+    border-radius: 6px;
+    padding-top: 40px; /* Avoid icon overlap */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .ocr-textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 12px;
+  }
+  
+  @media (max-width: 768px) {
+    .ocr-container {
+      flex-direction: column;
+      padding: 20px;
+    }
+  
+    .upload-section {
+      align-items: center;
+      margin-bottom: 20px;
+    }
+  
+    .ocr-textarea {
+      max-width: 100%;
+      height: 250px;
+    }
+  }
+  

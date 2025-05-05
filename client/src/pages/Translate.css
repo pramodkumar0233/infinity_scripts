@@ -1,0 +1,45 @@
+.translate-page {
+    width: auto;
+    margin: auto;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .translate-page select {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  .translate-box {
+    display: flex;
+    width: 1000px;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1rem 0;
+  }
+  
+  .translate-box textarea {
+    width: 50%;
+    height: 300px;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    resize: none;
+    border: 1px solid #ccc;
+  }
+  
+  .translate-page button {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .translate-page button:hover {
+    background: #0056b3;
+  }
+  
