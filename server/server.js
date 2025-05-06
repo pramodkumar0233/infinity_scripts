@@ -10,12 +10,11 @@ app.use(express.json());
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
-const translateRoutes = require('./routes/translate');
-const ocrRoutes = require('./routes/ocrproxy');
+const translationRoutes = require('./routes/translationRoutes');
 
 app.use('/api/auth', authRoutes);
-app.use('/api/translate', translateRoutes);
-app.use('/api/ocr', ocrRoutes);
+app.use("/api", translationRoutes); // Add the translation routes here
+
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {

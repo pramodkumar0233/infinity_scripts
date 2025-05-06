@@ -2,10 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Translate from "./pages/Translate";
-import OCRPage from "./pages/OCRPage";
-import TTSPage from "./pages/TTSPage";
-
+import Translate from "./pages/Translate"
 function App() {
   return (
     <Router>
@@ -15,9 +12,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/translate" element={<Translate />} />
-        <Route path="/ocr" element={<OCRPage />} />
-        <Route path="/text-to-speech" element={<TTSPage />} />
-      </Routes>
+        </Routes>
     </Router>
   );
 }
