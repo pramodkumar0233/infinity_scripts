@@ -1,0 +1,51 @@
+.ocr-page {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .ocr-page h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .ocr-page input[type="file"] {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  .ocr-page button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    margin: 15px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .ocr-page button:hover {
+    background-color: #0056b3;
+  }
+  
+  .ocr-page textarea {
+    width: 100%;
+    height: 200px;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    font-size: 16px;
+    background-color: #fff;
+  }
+  

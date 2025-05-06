@@ -16,6 +16,11 @@ app.use('/api/auth', authRoutes);
 app.use("/api", translationRoutes); // Add the translation routes here
 
 
+const ocrRoutes = require('./routes/ocrRoutes');
+app.use("/api", ocrRoutes);
+
+
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     app.listen(5000, () => console.log('Server running on port 5000'));

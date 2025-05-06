@@ -15,6 +15,11 @@ export default function Dashboard() {
           <h3>Language Translate</h3>
         </div>
 
+        <div className="card" onClick={() => navigate("/text-from-image")}>
+          <img src="/images/text-from-image.jpg" alt="OCR" />
+          <h3>Text from Image</h3>
+        </div>
+
       </div>
     </div>
   );
