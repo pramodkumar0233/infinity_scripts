@@ -19,6 +19,11 @@ app.use("/api", translationRoutes); // Add the translation routes here
 const ocrRoutes = require('./routes/ocrRoutes');
 app.use("/api", ocrRoutes);
 
+const ttsRoutes = require('./routes/ttsRoutes');
+app.use('/api', ttsRoutes);
+
+// Serve static audio files
+app.use('/audio', express.static('tts-audio'));
 
 
 mongoose.connect(process.env.MONGO_URI)
