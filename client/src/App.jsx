@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Translate from "./pages/Translate"
 import TextFromImage from "./pages/TextFromImage";
 import TextToSpeech from "./pages/TextToSpeech";
+import SpeechToText from "./pages/SpeechToText";
 function App() {
   return (
     <Router>
@@ -16,6 +17,8 @@ function App() {
         <Route path="/translate" element={<Translate />} />
         <Route path="/text-from-image" element={<TextFromImage />} />
         <Route path="/text-to-speech" element={<TextToSpeech />} />
+        <Route path="/speech-to-text" element={<SpeechToText />} />
+
         </Routes>
     </Router>
   );

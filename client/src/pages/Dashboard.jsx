@@ -25,6 +25,10 @@ export default function Dashboard() {
           <h3>Text to Speech</h3>
         </div>
 
+        <div className="card" onClick={() => navigate("/speech-to-text")}>
+          <img src="/images/tts.jpg" alt="Speech to text" />
+          <h3>Speech to Text</h3>
+        </div>
 
       </div>
     </div>
