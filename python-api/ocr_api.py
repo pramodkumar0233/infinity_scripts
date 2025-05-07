@@ -5,9 +5,16 @@ from PIL import Image
 import whisper
 import tempfile
 import os
+from transformers import pipeline
 
 app = Flask(__name__)
 CORS(app)
+
+
+print("🧠 Loading summarization model...")
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+print("✅ Summarization model loaded.")
+
 
 # Load Whisper once
 try:
@@ -62,6 +69,23 @@ def speech_to_text():
     except Exception as e:
         print(f"❌ Error during processing: {str(e)}")
         return jsonify({"error": str(e)}), 500
+
+@app.route('/api/summarize', methods=['POST'])
+def summarize_text():
+    data = request.get_json()
+
+    if not data or 'text' not in data:
+        return jsonify({'error': 'Text is required for summarization'}), 400
+
+    try:
+        original_text = data['text']
+        print(f"📄 Text to summarize: {original_text[:100]}...")
+
+        summary = summarizer(original_text, max_length=150, min_length=30, do_sample=False)
+        return jsonify({'summary': summary[0]['summary_text']})
+    except Exception as e:
+        print(f"❌ Summarization error: {str(e)}")
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5050, debug=True)

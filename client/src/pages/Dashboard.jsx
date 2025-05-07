@@ -30,6 +30,16 @@ export default function Dashboard() {
           <h3>Speech to Text</h3>
         </div>
 
+        <div className="card" onClick={() => navigate("/summarize")}>
+          <img src="/images/tts.jpg" alt="summarize" />
+          <h3>Summarize</h3>
+        </div>
+
+        <div className="card" onClick={() => navigate("/future funtions")}>
+          <img src="/images/translate.jpg" alt="IDK" />
+          <h3>IDK</h3>
+        </div>
+
       </div>
     </div>
   );
