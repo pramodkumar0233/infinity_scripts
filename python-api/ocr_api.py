@@ -84,7 +84,7 @@ def summarize_text():
         original_text = data['text']
         print(f"📄 Text to summarize: {original_text[:100]}...")
 
-        summary = summarizer(original_text, max_length=150, min_length=0, do_sample=False)
+        summary = summarizer(original_text, max_length=150, min_length=40, do_sample=False)
         return jsonify({'summary': summary[0]['summary_text']})
     except Exception as e:
         print(f"❌ Summarization error: {str(e)}")
