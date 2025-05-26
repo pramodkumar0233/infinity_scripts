@@ -1,0 +1,86 @@
+/* Apply to your main container wrapping everything, e.g. .handwritten-page */
+
+.handwritten-page {
+  width: 800px;          /* fixed width */
+  height: 600px;         /* fixed height - adjust as you like */
+  margin: 20px auto;     /* center horizontally */
+  overflow-y: auto;      /* vertical scroll if content overflows */
+  overflow-x: hidden;    /* hide horizontal scroll */
+  border: 1px solid #ccc;
+  padding: 20px;
+  box-sizing: border-box; /* include padding in width/height */
+  background-color: white;
+  font-family: Arial, sans-serif;
+}
+
+.handwritten-page textarea,
+.handwritten-page img {
+  max-width: 100%;   /* prevent overflow horizontally */
+  box-sizing: border-box;
+}
+
+textarea {
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  resize: vertical;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #5a4fcf;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+button:disabled {
+  background-color: #a49de8;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #4238b8;
+}
+
+.error {
+  color: red;
+  margin-top: 1rem;
+}
+
+.image-container {
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  max-width: 100%;  /* Add this */
+  box-sizing: border-box;  /* Add this */
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  box-sizing: border-box;
+}
+
+.handwritten-page {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.image-container {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+

@@ -2,11 +2,15 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Translate from "./pages/Translate"
+import Translate from "./pages/Translate";
 import TextFromImage from "./pages/TextFromImage";
 import TextToSpeech from "./pages/TextToSpeech";
 import SpeechToText from "./pages/SpeechToText";
 import TextSummarizer from "./pages/TextSummarizer";
+
+// Import the new handwritten component
+import TextToHandwritten from "./pages/TextToHandwritten";
+
 function App() {
   return (
     <Router>
@@ -21,7 +25,9 @@ function App() {
         <Route path="/speech-to-text" element={<SpeechToText />} />
         <Route path="/summarize" element={<TextSummarizer />} />
 
-        </Routes>
+        {/* New route for handwritten text */}
+        <Route path="/text-to-handwritten" element={<TextToHandwritten />} />
+      </Routes>
     </Router>
   );
 }

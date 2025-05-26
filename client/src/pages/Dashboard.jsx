@@ -35,6 +35,11 @@ export default function Dashboard() {
           <h3>Summarize</h3>
         </div>
 
+        <div className="card" onClick={() => navigate("/text-to-handwritten")}>
+          <img src="/images/stt.png" alt="Text to Handwritten" />
+          <h3>Text to Handwritten</h3>
+        </div>
+
       </div>
     </div>
   );

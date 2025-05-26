@@ -1,11 +1,14 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pytesseract
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import whisper
 import tempfile
+import base64
 import os
 from transformers import pipeline
+from io import BytesIO
+from textwrap import wrap
 
 app = Flask(__name__)
 CORS(app)
@@ -81,11 +84,65 @@ def summarize_text():
         original_text = data['text']
         print(f"📄 Text to summarize: {original_text[:100]}...")
 
-        summary = summarizer(original_text, max_length=150, min_length=30, do_sample=False)
+        summary = summarizer(original_text, max_length=150, min_length=0, do_sample=False)
         return jsonify({'summary': summary[0]['summary_text']})
     except Exception as e:
         print(f"❌ Summarization error: {str(e)}")
         return jsonify({'error': str(e)}), 500
+    
+@app.route('/api/handwritten', methods=['POST'])
+def text_to_handwritten():
+    data = request.get_json()
+    if not data or 'text' not in data:
+        return jsonify({'error': 'Text is required'}), 400
+
+    text = data['text']
+    font_name = data.get('font', 'Caveat-VariableFont_wght.ttf')
+    font_path = os.path.join(os.path.dirname(__file__), 'fonts', font_name)
+
+    try:
+        # Set image size large enough
+        img_width = 600
+        max_chars_per_line = 43  # You can tune this value
+
+        try:
+            font = ImageFont.truetype(font_path, 36)
+        except IOError:
+            print(f"⚠️ Font '{font_name}' not found. Using default font instead.")
+            font = ImageFont.load_default()
+
+        # Wrap text
+        wrapped_lines = wrap(text, width=max_chars_per_line)
+        # Create a temporary ImageDraw object to calculate text height
+        dummy_img = Image.new('RGB', (1,1))
+        draw = ImageDraw.Draw(dummy_img)
+
+        bbox = draw.textbbox((0, 0), 'A', font=font)
+        line_height = (bbox[3] - bbox[1]) + 10  # height + padding
+
+        img_height = 100 + line_height * len(wrapped_lines)
+
+        img = Image.new('RGB', (img_width, img_height), color='white')
+        draw = ImageDraw.Draw(img)
+
+        # Draw each line
+        y = 50
+        for line in wrapped_lines:
+            draw.text((40, y), line, font=font, fill='black')
+            y += line_height
+
+        # Return as base64
+        buffered = BytesIO()
+        img.save(buffered, format="PNG")
+        img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
+
+        return jsonify({'image_base64': img_str})
+
+    except Exception as e:
+        print(f"❌ Error generating handwritten image: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5050, debug=True)
