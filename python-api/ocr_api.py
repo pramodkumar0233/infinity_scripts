@@ -9,9 +9,23 @@ import os
 from transformers import pipeline
 from io import BytesIO
 from textwrap import wrap
+from dotenv import load_dotenv
+import wolframalpha
+import re
+from sympy import sympify
+from sympy.core.sympify import SympifyError
+
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
+
+
+# Get App ID from .env
+WOLFRAM_APP_ID = os.getenv('WOLFRAMALPHA_APP_ID')
+# Initialize WolframAlpha client
+client = wolframalpha.Client(WOLFRAM_APP_ID)
 
 
 print("🧠 Loading summarization model...")
@@ -142,6 +156,31 @@ def text_to_handwritten():
         print(f"❌ Error generating handwritten image: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/mathsolve', methods=['POST'])
+def solve_expression():
+    data = request.json
+    expression = data.get('expression')
+
+    if not expression:
+        return jsonify({'error': 'No expression provided'}), 400
+
+    try:
+        expression = expression.replace("^", "**")
+        expression = re.sub(r'\b0+(\d)', r'\1', expression)
+
+        result = sympify(expression)
+
+        # Format result: int if possible, else float
+        if result.is_number and result == int(result):
+            result = int(result)
+        else:
+            result = float(result.evalf())
+
+        return jsonify({'result': str(result)})
+
+    except (SympifyError, TypeError, ValueError, ZeroDivisionError) as e:
+        print(f"❌ Expression Error: {str(e)}")
+        return jsonify({'error': 'Invalid mathematical expression'}), 400
 
 
 if __name__ == '__main__':

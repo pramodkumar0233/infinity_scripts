@@ -7,6 +7,7 @@ import TextFromImage from "./pages/TextFromImage";
 import TextToSpeech from "./pages/TextToSpeech";
 import SpeechToText from "./pages/SpeechToText";
 import TextSummarizer from "./pages/TextSummarizer";
+import Math from "./pages/Math";
 
 // Import the new handwritten component
 import TextToHandwritten from "./pages/TextToHandwritten";
@@ -24,6 +25,7 @@ function App() {
         <Route path="/text-to-speech" element={<TextToSpeech />} />
         <Route path="/speech-to-text" element={<SpeechToText />} />
         <Route path="/summarize" element={<TextSummarizer />} />
+        <Route path="/mathsolve" element={<Math />} />
 
         {/* New route for handwritten text */}
         <Route path="/text-to-handwritten" element={<TextToHandwritten />} />
