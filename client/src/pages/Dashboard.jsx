@@ -36,13 +36,13 @@ export default function Dashboard() {
         </div>
 
         <div className="card" onClick={() => navigate("/text-to-handwritten")}>
-          <img src="/images/stt.png" alt="Text to Handwritten" />
+          <img src="/images/htdt.jpg" alt="Text to Handwritten" />
           <h3>Text to Handwritten</h3>
         </div>
 
         <div className="card" onClick={() => navigate("/mathsolve")}>
-          <img src="/images/stt.png" alt="Text to Handwritten" />
-          <h3>Text to Handwritten</h3>
+          <img src="/images/math.jpg" alt="Math solver" />
+          <h3>Math solver</h3>
         </div>
 
       </div>

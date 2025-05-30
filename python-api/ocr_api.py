@@ -14,6 +14,7 @@ import wolframalpha
 import re
 from sympy import sympify
 from sympy.core.sympify import SympifyError
+import traceback
 
 
 load_dotenv()
@@ -21,11 +22,6 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-
-# Get App ID from .env
-WOLFRAM_APP_ID = os.getenv('WOLFRAMALPHA_APP_ID')
-# Initialize WolframAlpha client
-client = wolframalpha.Client(WOLFRAM_APP_ID)
 
 
 print("🧠 Loading summarization model...")
@@ -103,59 +99,93 @@ def summarize_text():
     except Exception as e:
         print(f"❌ Summarization error: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
+@app.route('/api/options', methods=['GET'])
+def get_options():
+    fonts = [os.path.splitext(f)[0] for f in os.listdir('fonts') if f.endswith('.ttf')]
+    papers = [os.path.splitext(p)[0] for p in os.listdir('papers') if p.endswith('.png')]
+
+    return jsonify({'fonts': fonts, 'papers': papers})
+
     
 @app.route('/api/handwritten', methods=['POST'])
-def text_to_handwritten():
-    data = request.get_json()
-    if not data or 'text' not in data:
-        return jsonify({'error': 'Text is required'}), 400
-
+def generate_handwritten():
+    data = request.json
     text = data['text']
-    font_name = data.get('font', 'Caveat-VariableFont_wght.ttf')
-    font_path = os.path.join(os.path.dirname(__file__), 'fonts', font_name)
+    font_name = data['font']
+    font_size = int(data['fontSize'])
+    ink_color = data['color']
+    paper_type = data['paper']
 
     try:
-        # Set image size large enough
-        img_width = 600
-        max_chars_per_line = 43  # You can tune this value
+        font_path = f'fonts/{font_name}.ttf'
+        paper_path = f'papers/{paper_type}.png'
 
-        try:
-            font = ImageFont.truetype(font_path, 36)
-        except IOError:
-            print(f"⚠️ Font '{font_name}' not found. Using default font instead.")
-            font = ImageFont.load_default()
+        # Load font and background paper
+        font = ImageFont.truetype(font_path, font_size)
+        base_paper = Image.open(paper_path).convert("RGB")
 
-        # Wrap text
-        wrapped_lines = wrap(text, width=max_chars_per_line)
-        # Create a temporary ImageDraw object to calculate text height
-        dummy_img = Image.new('RGB', (1,1))
-        draw = ImageDraw.Draw(dummy_img)
+        # Setup draw parameters
+        x_start, y_start = 20, 40
+        margin_left = 20
+        margin_right = 20
+        max_width = base_paper.width - margin_left - margin_right
+        draw_temp = ImageDraw.Draw(base_paper.copy())
+        line_bbox = draw_temp.textbbox((0, 0), "A", font=font)
+        line_height = line_bbox[3] - line_bbox[1] + 2
 
-        bbox = draw.textbbox((0, 0), 'A', font=font)
-        line_height = (bbox[3] - bbox[1]) + 10  # height + padding
+        # Preserve indentation and handle newlines
+        paragraphs = text.split('\n')
+        lines = []
+        for para in paragraphs:
+            words = para.split()
+            line = ""
+            indent = len(para) - len(para.lstrip(' '))
+            space_prefix = " " * indent
+            for word in words:
+                test_line = f"{line} {word}".strip()
+                if draw_temp.textlength(space_prefix + test_line, font=font) <= max_width:
+                    line = test_line
+                else:
+                    lines.append(space_prefix + line)
+                    line = word
+            if line:
+                lines.append(space_prefix + line)
+            lines.append("")  # empty line for new paragraph
 
-        img_height = 100 + line_height * len(wrapped_lines)
+        # Write to pages
+        pages = []
+        page = base_paper.copy()
+        draw = ImageDraw.Draw(page)
+        x, y = x_start, y_start
 
-        img = Image.new('RGB', (img_width, img_height), color='white')
-        draw = ImageDraw.Draw(img)
-
-        # Draw each line
-        y = 50
-        for line in wrapped_lines:
-            draw.text((40, y), line, font=font, fill='black')
+        for line in lines:
+            if y + line_height > page.height - 10:
+                # Page full, save and start new one
+                pages.append(page)
+                page = base_paper.copy()
+                draw = ImageDraw.Draw(page)
+                y = y_start
+            draw.text((x, y), line, font=font, fill=ink_color)
             y += line_height
 
-        # Return as base64
-        buffered = BytesIO()
-        img.save(buffered, format="PNG")
-        img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
+        pages.append(page)  # add last page
 
-        return jsonify({'image_base64': img_str})
+        # Convert all pages to base64 images
+        image_list_base64 = []
+        for p in pages:
+            buffer = BytesIO()
+            p.save(buffer, format="PNG")
+            image_base64 = base64.b64encode(buffer.getvalue()).decode()
+            image_list_base64.append(image_base64)
+
+        return jsonify({'images': image_list_base64})
 
     except Exception as e:
-        print(f"❌ Error generating handwritten image: {str(e)}")
+        print("Error occurred:", str(e))
+        traceback.print_exc()
         return jsonify({'error': str(e)}), 500
-
+    
 @app.route('/api/mathsolve', methods=['POST'])
 def solve_expression():
     data = request.json
